@@ -7,14 +7,13 @@ using HttpClient client = new HttpClient();
 
 var personas = Procesador.LeerParsear(@"C:\Users\Eddy Martinez\Desktop\Prueba Tecnica 2026-05\CSVtoAPI\samples\sample_personas_v2.csv");
 
-foreach (var persona in personas)
-{
+
     try
     {
         var response = await client.PostAsJsonAsync(apiUrl, personas);
 
         if (response.IsSuccessStatusCode)
-            Console.WriteLine($"Persona {persona.Name} {persona.LastName} enviada exitosamente.");
+            Console.WriteLine("Personas enviadas exitosamente.");
         else
         {
             Console.WriteLine("Error al enviar la persona: " + response.StatusCode);
@@ -24,4 +23,3 @@ foreach (var persona in personas)
     {
         Console.WriteLine($"Fallo de conexion: {ex.Message}");
     }
-}
