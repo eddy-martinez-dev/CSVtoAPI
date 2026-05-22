@@ -68,12 +68,28 @@ public class PersonasController : ControllerBase
     // POST: api/Persona
     // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
     [HttpPost]
-    public async Task<ActionResult<Persona>> PostPersona(Persona persona)
+    public async Task<ActionResult> PostPersonas([FromBody] List<Persona> personas)
     {
-        _context.Personas.Add(persona);
+        if (personas == null || personas.Count == 0)
+            return BadRequest("La lista de personas está vacía.");
+
+        foreach (var persona in personas)
+        {
+            if (string.IsNullOrWhiteSpace(persona.Name))
+                return BadRequest("El nombre es requerido.");
+            if (string.IsNullOrWhiteSpace(persona.LastName))
+                return BadRequest("El apellido es requerido.");
+            if (persona.Age <= 0)
+                return BadRequest("La edad debe ser mayor que 0.");
+            if (persona.Birthate == DateTime.MinValue)
+                return BadRequest("La fecha de nacimiento no es válida.");
+
+            _context.Personas.Add(persona);
+        }
+
         await _context.SaveChangesAsync();
 
-        return CreatedAtAction("GetPersona", new { id = persona.Id }, persona);
+        return Ok(new { message = "Records saved successfully" });
     }
 
     // DELETE: api/Persona/5
