@@ -1,6 +1,6 @@
 # Prueba Técnica — CSV to API REST con .NET y SQLite
 
-Solución compuesta por dos proyectos independientes: una API REST en ASP.NET Core y un cliente de consola en .NET que lee un archivo CSV y envía los datos a la API.
+Solución compuesta por dos proyectos independientes: una API REST en ASP.NET Core con Clean Architecture y un cliente de consola en .NET que lee un archivo CSV y envía los datos a la API.
 
 ---
 
@@ -18,6 +18,19 @@ Solución compuesta por dos proyectos independientes: una API REST en ASP.NET Co
 |---|---|
 | API REST | ASP.NET Core, Entity Framework Core, SQLite, Swashbuckle (Swagger) |
 | Cliente consola | .NET, HttpClient, System.Text.Json |
+
+---
+
+## Arquitectura
+
+La API REST está implementada siguiendo **Clean Architecture** con 4 capas:
+
+| Capa | Proyecto | Responsabilidad |
+|---|---|---|
+| Dominio | API_REST.Domain | Entidades del negocio |
+| Aplicación | API_REST.Application | Interfaces y contratos |
+| Infraestructura | API_REST.Infrastructure | EF Core, SQLite, repositorios |
+| Presentación | API_REST | Controladores, Swagger, DI |
 
 ---
 
@@ -50,6 +63,9 @@ Con la API corriendo, abrir otra terminal:
 cd CSVtoAPI
 dotnet run
 ```
+
+El cliente buscará automáticamente el archivo CSV en `samples/sample_personas_v2.csv` relativo a la raíz de la solución.
+
 ---
 
 ## Endpoints de la API
@@ -93,6 +109,10 @@ Retorna todos los registros almacenados en la base de datos.
   }
 ]
 ```
+
+### GET /api/Personas/{id}
+
+Retorna un registro específico por su Id.
 
 ---
 
@@ -144,9 +164,12 @@ Un archivo de ejemplo se encuentra en `samples/sample_personas_v2.csv`.
 | 13 | Probar API con Swagger y Postman |
 | 14 | Prueba de integración completa |
 | 15 | Probar casos de error y validaciones |
+| 16 | Migrar API REST a Clean Architecture |
+| 17 | Corregir ruta del CSV a ruta relativa |
 
 ---
 
 ## Notas
 
 - La base de datos SQLite (`*.db`) está excluida del repositorio vía `.gitignore`. Se genera automáticamente al ejecutar `dotnet ef database update`.
+- La ruta del CSV es relativa a la raíz de la solución, no depende de la máquina donde se ejecute.
