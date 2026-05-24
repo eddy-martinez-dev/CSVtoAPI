@@ -1,37 +1,37 @@
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using API_REST.Models;
-using API_REST.Data;
+using API_REST.Application.Interfaces;
+using API_REST.Domain.Entities;
 
 [Route("api/[controller]")]
 [ApiController]
 public class PersonasController : ControllerBase
 {
-    private readonly ApplicationDbContext _context;
-    public PersonasController(ApplicationDbContext context)
+    private readonly IPersonaRepository _repository;
+    public PersonasController(IPersonaRepository repository)
     {
-        _context = context;
+        _repository = repository;
     }
 
     // GET: api/Persona
     [HttpGet]
     public async Task<ActionResult<IEnumerable<Persona>>> GetPersona()
     {
-        return await _context.Personas.ToListAsync();
+        var personas = await _repository.GetAllAsync();
+        return Ok(personas);
     }
 
     // GET: api/Persona/5
     [HttpGet("{id}")]
     public async Task<ActionResult<Persona>> GetPersona(int id)
     {
-        var persona = await _context.Personas.FindAsync(id);
+        var persona = await _repository.GetPersonaAsync(id);
 
         if (persona == null)
         {
             return NotFound();
         }
 
-        return persona;
+        return Ok(persona);
     }
 
     // POST: api/Persona
@@ -52,10 +52,9 @@ public class PersonasController : ControllerBase
             if (persona.Birthate == DateTime.MinValue)
                 return BadRequest("La fecha de nacimiento no es válida.");
 
-            _context.Personas.Add(persona);
         }
 
-        await _context.SaveChangesAsync();
+        await _repository.AddRangeAsync(personas);
 
         return Ok(new { message = "Records saved successfully" });
     }

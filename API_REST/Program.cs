@@ -1,12 +1,15 @@
-using API_REST.Models;
+using API_REST.Infrastructure.Data;
+using API_REST.Application.Interfaces;
+using API_REST.Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
-using API_REST.Data;
 
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+builder.Services.AddScoped<IPersonaRepository, PersonaRepository>();
 
 // Add services to the container.
 
