@@ -1,0 +1,7 @@
+<Solution>
+  <Folder Name="/Elementos de la solución/">
+    <File Path=".gitignore" />
+  </Folder>
+  <Project Path="API_REST/API_REST.csproj" />
+  <Project Path="CSVtoAPI/CSV_Cliente.csproj" />
+</Solution>
