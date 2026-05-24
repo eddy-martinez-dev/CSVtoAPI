@@ -41,6 +41,7 @@ public class PersonasController : ControllerBase
         if (personas == null || personas.Count == 0)
             return BadRequest("La lista de personas está vacía.");
 
+        // Validacion de cada persona en la lista
         foreach (var persona in personas)
         {
             if (string.IsNullOrWhiteSpace(persona.Name))
@@ -56,6 +57,7 @@ public class PersonasController : ControllerBase
 
         await _repository.AddRangeAsync(personas);
 
+        // Retorna un mensaje de éxito
         return Ok(new { message = "Records saved successfully" });
     }
 }
