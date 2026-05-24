@@ -3,9 +3,12 @@ using System.Net.Http.Json;
 
 
 string apiUrl = args.Length > 0 ? args[0] : "http://localhost:5164/api/Personas";
+string csvPath = Path.Combine("..","samples", "sample_personas_v2.csv");
+
+Console.WriteLine(Path.GetFullPath(csvPath));
 using HttpClient client = new HttpClient();
 
-var personas = Procesador.LeerParsear(@"C:\Users\Eddy Martinez\Desktop\Prueba Tecnica 2026-05\CSVtoAPI\samples\sample_personas_v2.csv");
+var personas = Procesador.LeerParsear(csvPath);
 
 try
 {
