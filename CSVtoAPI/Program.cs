@@ -4,7 +4,7 @@ using System.Net.Http.Json;
 // Url de la API: se puede pasar como argumento o usar un valor por defecto
 string apiUrl = args.Length > 0 ? args[0] : "http://localhost:5164/api/Personas";
 // Ruita relativa al CSV
-string csvPath = Path.Combine("..", "..", "..", "..", "samples", "sample_personas_v2.csv");
+string csvPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "sample_personas_v2.csv");
 
 Console.WriteLine(Path.GetFullPath(csvPath));
 using HttpClient client = new HttpClient();
