@@ -2,6 +2,7 @@
 using API_REST.Domain.Entities;
 using API_REST.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
+using API_REST.Application.DTOs;
 
 namespace API_REST.Infrastructure.Repositories
 {
@@ -16,21 +17,46 @@ namespace API_REST.Infrastructure.Repositories
         }
 
         // Guaarda la lista de Personas en La base de datoss
-        public async Task AddRangeAsync(List<Persona> personas)
+        public async Task AddRangeAsync(List<PersonaCreateDTo> personas)
         {
-            await _context.Personas.AddRangeAsync(personas);
+            var entidades = personas.Select(p => new Persona
+            {
+                Name = p.Name,
+                LastName = p.LastName,
+                Age = p.Age,
+                Birthate = p.Birthate
+            }).ToList();
+
+            await _context.Personas.AddRangeAsync(entidades);
             await _context.SaveChangesAsync();
         }
 
-        public async Task<List<Persona>> GetAllAsync()
+        public async Task<List<PersonaResponseDto>> GetAllAsync()
         {
-            return await _context.Personas.ToListAsync();
+            return await _context.Personas.Select(p => new PersonaResponseDto
+            {
+                Id = p.Id,
+                Name = p.Name,
+                LastName = p.LastName,
+                Age = p.Age,
+                DateTime = p.Birthate
+            }).ToListAsync();
         }
 
         // Obtiene una persona por su ID
-        public async Task<Persona?> GetPersonaAsync(int id)
+        public async Task<PersonaResponseDto?> GetPersonaAsync(int id)
         {
-            return await _context.Personas.FindAsync(id);
+            var persona = await _context.Personas.FindAsync(id);
+            if (persona == null) return null;
+
+            return new PersonaResponseDto
+            {
+                Id = persona.Id,
+                Name = persona.Name,
+                LastName = persona.LastName,
+                Age = persona.Age,
+                DateTime = persona.Birthate
+            };
         }
     }
 }

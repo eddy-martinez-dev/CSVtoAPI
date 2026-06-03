@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using API_REST.Application.Interfaces;
-using API_REST.Domain.Entities;
+using API_REST.Application.DTOs;
 
 [Route("api/[controller]")]
 [ApiController]
@@ -14,7 +14,7 @@ public class PersonasController : ControllerBase
 
     // GET: api/Persona
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<Persona>>> GetPersona()
+    public async Task<ActionResult<IEnumerable<PersonaResponseDto>>> GetPersona()
     {
         var personas = await _repository.GetAllAsync();
         return Ok(personas);
@@ -22,7 +22,7 @@ public class PersonasController : ControllerBase
 
     // GET: api/Persona/5
     [HttpGet("{id}")]
-    public async Task<ActionResult<Persona>> GetPersona(int id)
+    public async Task<ActionResult<PersonaResponseDto?>> GetPersona(int id)
     {
         var persona = await _repository.GetPersonaAsync(id);
 
@@ -36,7 +36,7 @@ public class PersonasController : ControllerBase
 
     // POST: api/Persona
     [HttpPost]
-    public async Task<ActionResult> PostPersonas([FromBody] List<Persona> personas)
+    public async Task<ActionResult> PostPersonas([FromBody] List<PersonaCreateDTo> personas)
     {
         if (personas == null || personas.Count == 0)
             return BadRequest("La lista de personas está vacía.");

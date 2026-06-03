@@ -4,12 +4,12 @@ namespace CSV_Cliente
 {
     public class Procesador
     {
-        public static List<Persona> LeerParsear(string rutaArchivo)
+        public static List<PersonaCreateDTo> LeerParsear(string rutaArchivo)
         {
             if (string.IsNullOrWhiteSpace(rutaArchivo))
                 throw new ArgumentException("rutaArchivo no puede ser vacío", nameof(rutaArchivo));
 
-            var listaPersonas = new List<Persona>();
+            var listaPersonas = new List<PersonaCreateDTo>();
 
             try
             {
@@ -43,7 +43,7 @@ namespace CSV_Cliente
 
                     if (campos.Length == 4)
                     {
-                        var persona = new Persona
+                        var persona = new PersonaCreateDTo
                         {
                             Name = campos[0],
                             LastName = campos[1],
